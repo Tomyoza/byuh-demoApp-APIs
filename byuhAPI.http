@@ -1,0 +1,6 @@
+@byuhAPI_HostAddress = https://localhost:7091
+
+GET {{byuhAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
