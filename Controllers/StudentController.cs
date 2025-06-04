@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace byuhAPI.Controllers
 {
     [ApiController]
-    [Route("controller")]
+    [Route("Controller")]
     public class StudentController : ControllerBase
     {
         private readonly MysqlService _mysqlService;
@@ -16,7 +16,7 @@ namespace byuhAPI.Controllers
             _studentService = studentService;
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet]
         [Route("GetAll")]
         public IActionResult GetAll()
         {
@@ -24,7 +24,8 @@ namespace byuhAPI.Controllers
             return Ok(students);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
+        [Route("GetStudentById/{id}")]
         public IActionResult GetStudentById(int id)
         {
             var student = _studentService.GetById(id);
@@ -52,6 +53,43 @@ namespace byuhAPI.Controllers
 
         [HttpPut]
         [Route("UpdateById")]
+        public IActionResult UpdateStudent(int id, [FromBody] Student student)
+        {
+            bool isUpdated = _studentService.UpdateStudent(id, student.Name, student.Grade);
+            if (!isUpdated)
+            {
+                return NotFound();
+            }
 
+            return Ok(student);
+        }
+
+        [HttpDelete]
+        [Route("DeleteById")]
+        public IActionResult DeleteStudent(int id)
+        {
+            bool isDelted = _studentService.DeleteStudent(id);
+            if(!isDelted)
+            {
+                return NotFound();
+            }
+            return Ok();
+        }
+
+        [HttpGet("test-db-connection")]
+        public IActionResult TestDatabaseConnection()
+        {
+            try
+            {
+                using (var connection = _mysqlService.GetOpenMySqlConnection())
+                {
+                    return Ok("Database connected successfully.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Database connection failed: {ex.Message}");
+            }
+        }
     }
 }
