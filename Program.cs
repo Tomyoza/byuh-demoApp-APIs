@@ -8,7 +8,7 @@ builder.Services.AddSingleton<MysqlService>();
 builder.Services.AddSingleton<StudentService>();
 builder.Services.AddSingleton<TeacherService>();
 builder.Services.AddSingleton<CourseService>();
-//builder.Services.AddSingleton<EnrollmentService>();
+builder.Services.AddSingleton<EnrollmentService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
